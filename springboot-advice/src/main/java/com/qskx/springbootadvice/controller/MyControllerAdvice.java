@@ -4,6 +4,7 @@ import com.qskx.springbootadvice.exception.MyException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,12 +51,21 @@ public class MyControllerAdvice {
      * @param ex
      * @return
      */
-    @ResponseBody
+//    @ResponseBody
+//    @ExceptionHandler(value = MyException.class)
+//    public Map myErrorHandler(MyException ex) {
+//        Map map = new HashMap();
+//        map.put("code", ex.getCode());
+//        map.put("msg", ex.getMsg());
+//        return map;
+//    }
+
     @ExceptionHandler(value = MyException.class)
-    public Map myErrorHandler(MyException ex) {
-        Map map = new HashMap();
-        map.put("code", ex.getCode());
-        map.put("msg", ex.getMsg());
-        return map;
+    public ModelAndView myErrorHandler(MyException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error");
+        modelAndView.addObject("code", ex.getCode());
+        modelAndView.addObject("msg", ex.getMsg());
+        return modelAndView;
     }
 }

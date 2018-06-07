@@ -28,8 +28,8 @@ public class TestController {
     @RequestMapping("/home")
     public String home() throws Exception {
 
-        throw new Exception("Sam 错误");
-//        throw new MyException("101", "Sam 错误");
+//        throw new Exception("Sam 错误");
+        throw new MyException("101", "Sam 错误");
 
     }
 }
