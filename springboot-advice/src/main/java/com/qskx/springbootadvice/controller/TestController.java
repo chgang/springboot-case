@@ -20,16 +20,16 @@ public class TestController {
 
 
     //或者 通过@ModelAttribute获取
-//    @RequestMapping("/home")
-//    public String home(@ModelAttribute("author") String author) {
-//        return author;
-//    }
-
     @RequestMapping("/home")
-    public String home() throws Exception {
-
-//        throw new Exception("Sam 错误");
-        throw new MyException("101", "Sam 错误");
-
+    public String home(@ModelAttribute("author") String author) {
+        return author;
     }
+
+//    @RequestMapping("/home")
+//    public String home() throws Exception {
+//
+////        throw new Exception("Sam 错误");
+//        throw new MyException("101", "Sam 错误");
+//
+//    }
 }
