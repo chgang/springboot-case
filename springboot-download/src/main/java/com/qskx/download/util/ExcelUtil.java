@@ -1,5 +1,6 @@
 package com.qskx.download.util;
 
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
@@ -77,6 +78,9 @@ public class ExcelUtil {
                 Cell cell = row1.createCell(j);
                 cell.setCellValue(list.get(i).get(keys[j]) == null?" ": list.get(i).get(keys[j]).toString());
                 cell.setCellStyle(cs2);
+//                if (list.get(i).get(keys[j]) != null && list.get(i).get(keys[j]).toString().equals("id")){
+//                    cs2.setDataFormat(HSSFDataFormat.getBuiltinFormat("0"));
+//                }
             }
         }
         return wb;
