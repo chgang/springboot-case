@@ -11,6 +11,17 @@
 	<name>springboot-case</name>
 	<description>Demo project for Spring Boot</description>
 
+	<modules>
+		<module>springboot-servletdispatcher</module>
+		<module>springboot-nio</module>
+		<module>springboot-advice</module>
+		<module>springboot-aop</module>
+		<module>springboot-webjsp</module>
+		<module>springboot-webasynctask</module>
+		<module>springboot-schedule</module>
+		<module>springboot-download</module>
+	</modules>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
