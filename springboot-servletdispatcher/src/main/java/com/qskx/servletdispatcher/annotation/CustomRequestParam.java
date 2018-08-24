@@ -2,6 +2,7 @@ package com.qskx.servletdispatcher.annotation;
 
 import java.lang.annotation.*;
 
+
 /**
  * @Description:
  * @Author: 111111
@@ -9,7 +10,7 @@ import java.lang.annotation.*;
  * @Version: 1.0
  * Copyright: Copyright (c) 2018
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CustomRequestParam {

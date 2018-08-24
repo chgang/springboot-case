@@ -80,7 +80,32 @@ public class CustomDispatcherServlet extends HttpServlet {
         Map<String, String[]> parameterMap = req.getParameterMap();
         Object[] paramValues = new Object[parameterTypes.length];
 
-        
+        for (int i = 0; i < parameterTypes.length; i++){
+            String requestParam = parameterTypes[i].getSimpleName();
+
+            if (requestParam.equals("HttpServletRequest")){
+                paramValues[i] = req;
+                continue;
+            }
+
+            if (requestParam.equals("HttpServletResponse")){
+                paramValues[i]=resp;
+                continue;
+            }
+
+            if (requestParam.equals("String")){
+                for (Map.Entry<String, String[]> param : parameterMap.entrySet()){
+                    String value = Arrays.toString(param.getValue()).replaceAll("[|]", "").replace(",/s", ",");
+                    paramValues[i] = value;
+                }
+            }
+
+            try {
+                method.invoke(this.controllerMap.get(uri), paramValues);//第一个参数是method所对应的实例 在ioc容器中
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initHandlerMapping() {
