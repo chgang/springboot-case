@@ -13,8 +13,8 @@ import java.io.IOException;
 public class TestController {
 
     @CustomRequestMapping("/doTest")
-    public void test1(@CustomRequestParam("param") String param,
-                      HttpServletRequest request, HttpServletResponse response
+    public void test1(HttpServletRequest request, HttpServletResponse response,
+                      @CustomRequestParam("param") String param
                       ){
         System.out.println(param);
         try {
@@ -27,7 +27,7 @@ public class TestController {
     @CustomRequestMapping("/doTest2")
     public void test2(HttpServletRequest request, HttpServletResponse response){
         try {
-            response.getWriter().println("doTest2 method success!");
+            response.getWriter().write("doTest2 method success!");
         } catch (IOException e) {
             e.printStackTrace();
         }

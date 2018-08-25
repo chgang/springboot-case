@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
@@ -90,6 +91,15 @@ public class CustomDispatcherServlet extends HttpServlet {
 
             if (requestParam.equals("HttpServletResponse")){
                 paramValues[i]=resp;
+                if (i == parameterTypes.length - 1) {
+                    try {
+                        method.invoke(this.controllerMap.get(uri), paramValues);//第一个参数是method所对应的实例 在ioc容器中
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
                 continue;
             }
 
