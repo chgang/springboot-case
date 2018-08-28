@@ -20,6 +20,8 @@
 		<module>springboot-webasynctask</module>
 		<module>springboot-schedule</module>
 		<module>springboot-download</module>
+		<module>springboot-quartz</module>
+		<module>springboot-forkjoin</module>
 	</modules>
 
 	<parent>
