@@ -9,8 +9,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class SpringbootQuartzApplicationTests {
 
+//	@Autowired
+//	private JobAndTriggerServiceImpl jobAndTriggerService;
+
 	@Test
 	public void contextLoads() {
+//		PageInfo<JobAndTrigger> pageInfo = jobAndTriggerService.getJobAndTriggerDetails(0,10);
+//		System.out.printf("===========" + pageInfo.getList().size());
 	}
 
 }

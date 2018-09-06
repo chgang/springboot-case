@@ -1,54 +1,37 @@
 package com.qskx.quartz.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.qskx.quartz.entity.JobAndTrigger;
 import com.qskx.quartz.job.BaseJob;
-import com.qskx.quartz.service.IJobAndTriggerService;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.PageInfo;
-
 
 @RestController
 @RequestMapping(value="/job")
-public class JobController 
-{
-	@Autowired
-	private IJobAndTriggerService iJobAndTriggerService;
+public class JobController {
+//
+//	@Autowired
+//	private IJobAndTriggerService iJobAndTriggerService;
 	
 	//加入Qulifier注解，通过名称注入bean
 	@Autowired
-	@Qualifier("scheduler")
 	private Scheduler scheduler;
 	
-	private static Logger log = LoggerFactory.getLogger(JobController.class);  
-	
+	private static Logger log = LoggerFactory.getLogger(JobController.class);
 
 	@PostMapping(value="/addjob")
-	public void addjob(@RequestParam(value="jobClassName")String jobClassName, 
-			@RequestParam(value="jobGroupName")String jobGroupName, 
-			@RequestParam(value="cronExpression")String cronExpression) throws Exception
-	{			
+	public String addjob(@RequestParam(value="jobClassName")String jobClassName,
+						 @RequestParam(value="jobGroupName")String jobGroupName,
+						 @RequestParam(value="cronExpression")String cronExpression) throws Exception
+	{
+		log.info("addjob -> 添加新任务 jobClassName {}, jobGroupName {}, cronExpression {}", jobClassName, jobGroupName, cronExpression);
 		addJob(jobClassName, jobGroupName, cronExpression);
+		return "success";
 	}
 	
 	public void addJob(String jobClassName, String jobGroupName, String cronExpression)throws Exception{
@@ -75,11 +58,12 @@ public class JobController
         }
 	}
 
-
 	@PostMapping(value="/pausejob")
-	public void pausejob(@RequestParam(value="jobClassName")String jobClassName, @RequestParam(value="jobGroupName")String jobGroupName) throws Exception
-	{			
+	public String pausejob(@RequestParam(value="jobClassName")String jobClassName,
+						 @RequestParam(value="jobGroupName")String jobGroupName) throws Exception {
+		log.info("pausejob -> 暂停任务 jobClassName {}, jobGroupName {}", jobClassName, jobGroupName);
 		jobPause(jobClassName, jobGroupName);
+		return "true";
 	}
 	
 	public void jobPause(String jobClassName, String jobGroupName) throws Exception
@@ -89,9 +73,11 @@ public class JobController
 	
 
 	@PostMapping(value="/resumejob")
-	public void resumejob(@RequestParam(value="jobClassName")String jobClassName, @RequestParam(value="jobGroupName")String jobGroupName) throws Exception
-	{			
+	public String resumejob(@RequestParam(value="jobClassName")String jobClassName,
+						  @RequestParam(value="jobGroupName")String jobGroupName) throws Exception {
+		log.info("resumejob -> 重启任务 jobClassName {}, jobGroupName {}", jobClassName, jobGroupName);
 		jobresume(jobClassName, jobGroupName);
+		return "true";
 	}
 	
 	public void jobresume(String jobClassName, String jobGroupName) throws Exception
@@ -101,11 +87,12 @@ public class JobController
 	
 	
 	@PostMapping(value="/reschedulejob")
-	public void rescheduleJob(@RequestParam(value="jobClassName")String jobClassName, 
+	public String rescheduleJob(@RequestParam(value="jobClassName")String jobClassName,
 			@RequestParam(value="jobGroupName")String jobGroupName,
-			@RequestParam(value="cronExpression")String cronExpression) throws Exception
-	{			
+			@RequestParam(value="cronExpression")String cronExpression) throws Exception {
+		log.info("reschedulejob -> 重置任务 jobGroupName {}, cronExpression {}", jobGroupName, cronExpression);
 		jobreschedule(jobClassName, jobGroupName, cronExpression);
+		return "true";
 	}
 	
 	public void jobreschedule(String jobClassName, String jobGroupName, String cronExpression) throws Exception
@@ -130,9 +117,11 @@ public class JobController
 	
 	
 	@PostMapping(value="/deletejob")
-	public void deletejob(@RequestParam(value="jobClassName")String jobClassName, @RequestParam(value="jobGroupName")String jobGroupName) throws Exception
-	{			
+	public String deletejob(@RequestParam(value="jobClassName")String jobClassName,
+						  @RequestParam(value="jobGroupName")String jobGroupName) throws Exception {
+		log.info("deletejob -> 删除任务 jobClassName {}, jobGroupName {}", jobClassName, jobGroupName);
 		jobdelete(jobClassName, jobGroupName);
+		return "success";
 	}
 	
 	public void jobdelete(String jobClassName, String jobGroupName) throws Exception
@@ -143,15 +132,15 @@ public class JobController
 	}
 	
 	
-	@GetMapping(value="/queryjob")
-	public Map<String, Object> queryjob(@RequestParam(value="pageNum")Integer pageNum, @RequestParam(value="pageSize")Integer pageSize) 
-	{			
-		PageInfo<JobAndTrigger> jobAndTrigger = iJobAndTriggerService.getJobAndTriggerDetails(pageNum, pageSize);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("JobAndTrigger", jobAndTrigger);
-		map.put("number", jobAndTrigger.getTotal());
-		return map;
-	}
+//	@GetMapping(value="/queryjob")
+//	public Map<String, Object> queryjob(@RequestParam(value="pageNum")Integer pageNum, @RequestParam(value="pageSize")Integer pageSize)
+//	{
+//		PageInfo<JobAndTrigger> jobAndTrigger = iJobAndTriggerService.getJobAndTriggerDetails(pageNum, pageSize);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("JobAndTrigger", jobAndTrigger);
+//		map.put("number", jobAndTrigger.getTotal());
+//		return map;
+//	}
 	
 	public static BaseJob getClass(String classname) throws Exception
 	{
