@@ -1,22 +1,25 @@
 package com.qskx.quartz.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.qskx.quartz.entity.JobAndTrigger;
 import com.qskx.quartz.job.BaseJob;
+import com.qskx.quartz.service.IJobAndTriggerService;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
 @RequestMapping(value="/job")
 public class JobController {
-//
-//	@Autowired
-//	private IJobAndTriggerService iJobAndTriggerService;
+
+	@Autowired
+	private IJobAndTriggerService iJobAndTriggerService;
 	
 	//加入Qulifier注解，通过名称注入bean
 	@Autowired
@@ -132,15 +135,15 @@ public class JobController {
 	}
 	
 	
-//	@GetMapping(value="/queryjob")
-//	public Map<String, Object> queryjob(@RequestParam(value="pageNum")Integer pageNum, @RequestParam(value="pageSize")Integer pageSize)
-//	{
-//		PageInfo<JobAndTrigger> jobAndTrigger = iJobAndTriggerService.getJobAndTriggerDetails(pageNum, pageSize);
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("JobAndTrigger", jobAndTrigger);
-//		map.put("number", jobAndTrigger.getTotal());
-//		return map;
-//	}
+	@GetMapping(value="/queryjob")
+	public Map<String, Object> queryjob(@RequestParam(value="pageNum")Integer pageNum, @RequestParam(value="pageSize")Integer pageSize)
+	{
+		PageInfo<JobAndTrigger> jobAndTrigger = iJobAndTriggerService.getJobAndTriggerDetails(pageNum, pageSize);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("JobAndTrigger", jobAndTrigger);
+		map.put("number", jobAndTrigger.getTotal());
+		return map;
+	}
 	
 	public static BaseJob getClass(String classname) throws Exception
 	{
