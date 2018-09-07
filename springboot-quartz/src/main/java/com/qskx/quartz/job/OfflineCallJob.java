@@ -27,7 +27,7 @@ public class OfflineCallJob implements BaseJob {
   
     private static Logger log = LoggerFactory.getLogger(OfflineCallJob.class);
 
-    private static final String url = "http://10.255.72.154:18090/fengjr-p2passet-data-collection/mq/receive/task/msg";
+    private static final String url = "";
      
     public OfflineCallJob() {
           
@@ -35,9 +35,8 @@ public class OfflineCallJob implements BaseJob {
      
     public void execute(JobExecutionContext context)  
         throws JobExecutionException {  
-        log.info("New Job执行时间: " + new Date());
+        log.info("OfflineCallJob -> 执行时间: " + new Date());
         try {
-            String url = "";
 
             FileInputStream fis = new FileInputStream("");
 //            FileInputStream fis = new FileInputStream("D:\\external-git\\springboot-case\\springboot-quartz\\userInfo.txt");
