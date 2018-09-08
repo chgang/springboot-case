@@ -37,7 +37,6 @@ public class OfflineCallJob implements BaseJob {
         throws JobExecutionException {  
         log.info("OfflineCallJob -> 执行时间: " + new Date());
         try {
-
             FileInputStream fis = new FileInputStream("");
 //            FileInputStream fis = new FileInputStream("D:\\external-git\\springboot-case\\springboot-quartz\\userInfo.txt");
             InputStreamReader isr = new InputStreamReader(fis);
