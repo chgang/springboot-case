@@ -14,7 +14,7 @@ public class SpringbootQuartzApplicationTests {
 
 	@Test
 	public void contextLoads() {
-//		PageInfo<JobAndTrigger> pageInfo = jobAndTriggerService.getJobAndTriggerDetails(0,10);
+//		PageInfo<ScheduleJob> pageInfo = jobAndTriggerService.getJobAndTriggerDetails(0,10);
 //		System.out.printf("===========" + pageInfo.getList().size());
 	}
 

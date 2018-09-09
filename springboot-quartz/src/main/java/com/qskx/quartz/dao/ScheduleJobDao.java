@@ -1,11 +1,11 @@
-package com.qskx.quartz.service;
-
-
-import com.qskx.quartz.vo.ScheduleJobVo;
+package com.qskx.quartz.dao;
 
 import java.util.List;
 
-public interface IJobAndTriggerService {
+import com.qskx.quartz.entity.ScheduleJob;
+import com.qskx.quartz.vo.ScheduleJobVo;
+
+public interface ScheduleJobDao {
 	/**
 	 * 初始化定时任务
 	 */
