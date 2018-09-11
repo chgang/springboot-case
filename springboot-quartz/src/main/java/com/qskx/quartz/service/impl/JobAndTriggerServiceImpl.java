@@ -7,9 +7,12 @@ import com.qskx.quartz.utils.ScheduleUtils;
 import com.qskx.quartz.vo.ScheduleJobVo;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -18,10 +21,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
 public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
+
+	private static final Logger log = LoggerFactory.getLogger(JobAndTriggerServiceImpl.class);
+
 	/** 调度工厂Bean */
 	@Autowired
 	private Scheduler scheduler;
@@ -31,10 +38,12 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 
 	public void initScheduleJob() {
 		ScheduleJobVo scheduleJobVo = new ScheduleJobVo();
-		List<ScheduleJobVo> scheduleJobList = scheduleJobDao.queryList(scheduleJobVo);
+
+		List<ScheduleJob> scheduleJobList = scheduleJobDao.queryList(convertPOAndVo(new ScheduleJob(), scheduleJobVo, null));
 		if (CollectionUtils.isEmpty(scheduleJobList)) {
 			return;
 		}
+
 		for (ScheduleJob scheduleJob : scheduleJobList) {
 
 			CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
@@ -50,62 +59,62 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 	}
 
 	public Long insert(ScheduleJobVo scheduleJobVo) {
-		ScheduleJob scheduleJob = scheduleJobVo.getTargetObject(ScheduleJob.class);
+		ScheduleJob scheduleJob = convertPOAndVo(new ScheduleJob(), scheduleJobVo, null);
 		ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-		return jdbcDao.insert(scheduleJob);
+		return scheduleJobDao.insert(scheduleJob);
 	}
 
 	public void update(ScheduleJobVo scheduleJobVo) {
-		ScheduleJob scheduleJob = scheduleJobVo.getTargetObject(ScheduleJob.class);
+		ScheduleJob scheduleJob = convertPOAndVo(new ScheduleJob(), scheduleJobVo, null);
 		ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
-		jdbcDao.update(scheduleJob);
+		scheduleJobDao.update(scheduleJob);
 	}
 
 	public void delUpdate(ScheduleJobVo scheduleJobVo) {
-		ScheduleJob scheduleJob = new ScheduleJob();
+		ScheduleJob scheduleJob = convertPOAndVo(new ScheduleJob(), scheduleJobVo, null);
 		//先删除
 		ScheduleUtils.deleteScheduleJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//再创建
 		ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
 		//数据库直接更新即可
-		jdbcDao.update(scheduleJob);
+		scheduleJobDao.update(scheduleJob);
 	}
 
 	public void delete(Long scheduleJobId) {
-		ScheduleJob scheduleJob = jdbcDao.get(ScheduleJob.class, scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
 		//删除运行的任务
 		ScheduleUtils.deleteScheduleJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//删除数据
-		jdbcDao.delete(ScheduleJob.class, scheduleJobId);
+		scheduleJobDao.delete(scheduleJobId);
 	}
 
 	public void runOnce(Long scheduleJobId) {
-		ScheduleJob scheduleJob = jdbcDao.get(ScheduleJob.class, scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
 		ScheduleUtils.runOnce(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 	}
 
 	public void pauseJob(Long scheduleJobId) {
-		ScheduleJob scheduleJob = jdbcDao.get(ScheduleJob.class, scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
 		ScheduleUtils.pauseJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//演示数据库就不更新了
 	}
 
 	public void resumeJob(Long scheduleJobId) {
-		ScheduleJob scheduleJob = jdbcDao.get(ScheduleJob.class, scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
 		ScheduleUtils.resumeJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//演示数据库就不更新了
 	}
 
 	public ScheduleJobVo get(Long scheduleJobId) {
-		ScheduleJob scheduleJob = jdbcDao.get(ScheduleJob.class, scheduleJobId);
-		return scheduleJob.getTargetObject(ScheduleJobVo.class);
+		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
+		return convertPOAndVo(new ScheduleJobVo(), scheduleJob, null);
 	}
 
 	public List<ScheduleJobVo> queryList(ScheduleJobVo scheduleJobVo) {
 
-		List<ScheduleJob> scheduleJobs = jdbcDao.queryList(scheduleJobVo.getTargetObject(ScheduleJob.class));
+		List<ScheduleJob> scheduleJobs = scheduleJobDao.queryList(convertPOAndVo(new ScheduleJob(), scheduleJobVo, null));
 
-		List<ScheduleJobVo> scheduleJobVoList = BeanConverter.convert(ScheduleJobVo.class, scheduleJobs);
+		List<ScheduleJobVo> scheduleJobVoList = covertObjectList(ScheduleJobVo.class, scheduleJobs, null);
 		try {
 			for (ScheduleJobVo vo : scheduleJobVoList) {
 
@@ -150,9 +159,7 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 					JobDetail jobDetail = scheduler.getJobDetail(jobKey);
 					JobDataMap jobDataMap = jobDetail.getJobDataMap();
 					ScheduleJob scheduleJob = (ScheduleJob)jobDataMap.get(ScheduleJobVo.JOB_PARAM_KEY);
-					ScheduleJobVo scheduleJobVo = new ScheduleJobVo();
-					//TODO
-//					BeanConverter.convert(scheduleJobVo,scheduleJob);
+					ScheduleJobVo scheduleJobVo = convertPOAndVo(new ScheduleJobVo(), scheduleJob, null);
 					List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
 					Trigger trigger = triggers.iterator().next();
 					Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
@@ -198,20 +205,21 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 		}
 	}
 
-	private <T> List<T> coverObjectList(Class<T> clazz, List<?> oldList, String[] ignoreProperties){
-		List<T> newList = new ArrayList<>();
-        oldList.stream().forEach(item -> {
+	private <T> List<T> covertObjectList(Class<T> clazz, List<?> sourceList, String[] ignoreProperties){
+		List<T> targetList = new ArrayList<>();
+		sourceList.stream().forEach(item -> {
             try {
                 T t = clazz.newInstance();
-                t = convert(t, item, ignoreProperties);
+                t = convertPOAndVo(t, item, ignoreProperties);
+                targetList.add(t);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-		return newList;
+		return targetList;
 	}
 
-    public static <T> T convert(T target, Object source, String[] ignoreProperties) {
+    private static <T> T convertPOAndVo(T target, Object source, String[] ignoreProperties) {
         List<String> ignoreList = ignoreProperties != null ? Arrays.asList(ignoreProperties) : null;
         copySameProperties(target, source, ignoreList);
         return target;
@@ -222,18 +230,46 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 	    try {
             BeanInfo beanInfo = Introspector.getBeanInfo(target.getClass());
             PropertyDescriptor[] propertyDesc = beanInfo.getPropertyDescriptors();
-            int length = propertyDesc.length;
 
             Arrays.asList(propertyDesc).stream().forEach(item -> {
                 if (item.getWriteMethod() != null && (ignoreList == null || !ignoreList.contains(item.getName()))) {
-
+					PropertyDescriptor sourcePd = getPropertyDesByName(source.getClass(), item.getName());
+					if (sourcePd != null && sourcePd.getReadMethod() != null){
+						Method readMethod = sourcePd.getReadMethod();
+						readMethod.setAccessible(true);
+						try {
+							Object value = readMethod.invoke(source);
+							Method writeMethod = item.getWriteMethod();
+							writeMethod.invoke(target, value);
+						} catch (Exception e) {
+							log.error("copySameProperties -> 获取原始对象属性值异常 error {}", e.getMessage(), e);
+						}
+					}
                 }
             });
         } catch (Exception e){
-
+			log.error("copySameProperties -> 同步复制属性值异常 error {}", e.getMessage(), e);
         }
-
 	}
 
+	private static PropertyDescriptor getPropertyDesByName(Class<?> clazz, String name){
+
+		AtomicReference<PropertyDescriptor> resultPd = null;
+		try {
+			if (StringUtils.isEmpty(name)){
+				return resultPd.get();
+			}
+			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+			PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+			Arrays.asList(descriptors).stream().forEach(item -> {
+				if (item.getName() != null && item.getName().equals(name)){
+					resultPd.set(item);
+				}
+			});
+		} catch (Exception e){
+			log.error("PropertyDescriptor -> 获取指定属性异常 error {}", e.getMessage(), e);
+		}
+		return resultPd.get();
+	}
 
 }

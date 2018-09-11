@@ -1,37 +1,33 @@
 package com.qskx.quartz.dao;
 
-import java.util.List;
-
 import com.qskx.quartz.entity.ScheduleJob;
 import com.qskx.quartz.vo.ScheduleJobVo;
 
+import java.util.List;
+
 public interface ScheduleJobDao {
-	/**
-	 * 初始化定时任务
-	 */
-	public void initScheduleJob();
 
 	/**
 	 * 新增
 	 *
-	 * @param scheduleJobVo
+	 * @param scheduleJob
 	 * @return
 	 */
-	public Long insert(ScheduleJobVo scheduleJobVo);
+	public Long insert(ScheduleJob scheduleJob);
 
 	/**
 	 * 直接修改 只能修改运行的时间，参数、同异步等无法修改
 	 *
-	 * @param scheduleJobVo
+	 * @param scheduleJob
 	 */
-	public void update(ScheduleJobVo scheduleJobVo);
+	public void update(ScheduleJob scheduleJob);
 
 	/**
 	 * 删除重新创建方式
 	 *
-	 * @param scheduleJobVo
+	 * @param scheduleJob
 	 */
-	public void delUpdate(ScheduleJobVo scheduleJobVo);
+	public void delUpdate(ScheduleJob scheduleJob);
 
 	/**
 	 * 删除
@@ -42,7 +38,6 @@ public interface ScheduleJobDao {
 
 	/**
 	 * 运行一次任务
-	 *
 	 * @param scheduleJobId the schedule job id
 	 * @return
 	 */
@@ -50,7 +45,6 @@ public interface ScheduleJobDao {
 
 	/**
 	 * 暂停任务
-	 *
 	 * @param scheduleJobId the schedule job id
 	 * @return
 	 */
@@ -70,15 +64,15 @@ public interface ScheduleJobDao {
 	 * @param scheduleJobId
 	 * @return
 	 */
-	public ScheduleJobVo get(Long scheduleJobId);
+	public ScheduleJob get(Long scheduleJobId);
 
 	/**
 	 * 查询任务列表
 	 *
-	 * @param scheduleJobVo
+	 * @param scheduleJob
 	 * @return
 	 */
-	public List<ScheduleJobVo> queryList(ScheduleJobVo scheduleJobVo);
+	public List<ScheduleJob> queryList(ScheduleJob scheduleJob);
 
 	/**
 	 * 获取运行中的任务列表

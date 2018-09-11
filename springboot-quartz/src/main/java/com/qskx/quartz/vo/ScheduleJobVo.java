@@ -8,7 +8,7 @@ public class ScheduleJobVo implements Serializable {
     private static final long serialVersionUID = 8006356233563137211L;
 
     /** 任务调度的参数key */
-    public static final String JOB_PARAM_KEY    = "jobParam";
+    public static final String JOB_PARAM_KEY  = "jobParam";
 
     /** 任务id */
     private Long scheduleJobId;

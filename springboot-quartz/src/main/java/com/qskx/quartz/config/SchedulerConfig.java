@@ -1,8 +1,5 @@
 package com.qskx.quartz.config;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.quartz.Scheduler;
 import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -10,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 public class SchedulerConfig {
@@ -41,7 +41,7 @@ public class SchedulerConfig {
     /*
      * 通过SchedulerFactoryBean获取Scheduler的实例
      */
-    @Bean(name="scheduler")
+    @Bean
     public Scheduler scheduler() throws IOException {
         return schedulerFactoryBean().getScheduler();
     }

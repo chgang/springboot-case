@@ -155,4 +155,24 @@ public class ScheduleJob implements Serializable {
 	public void setParam(String param) {
 		this.param = param;
 	}
+
+	@Override
+	public String toString() {
+		return "ScheduleJob{" +
+				"scheduleJobId=" + scheduleJobId +
+				", jobName='" + jobName + '\'' +
+				", aliasName='" + aliasName + '\'' +
+				", jobGroup='" + jobGroup + '\'' +
+				", jobTrigger='" + jobTrigger + '\'' +
+				", status='" + status + '\'' +
+				", cronExpression='" + cronExpression + '\'' +
+				", isSync=" + isSync +
+				", description='" + description + '\'' +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
+				", url='" + url + '\'' +
+				", param='" + param + '\'' +
+				'}';
+	}
+
 }
