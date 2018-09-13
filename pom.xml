@@ -22,6 +22,7 @@
 		<module>springboot-download</module>
 		<module>springboot-quartz</module>
 		<module>springboot-forkjoin</module>
+		<module>springboot-jsonrpc</module>
 	</modules>
 
 	<parent>
