@@ -20,6 +20,7 @@
 		<module>springboot-webasynctask</module>
 		<module>springboot-schedule</module>
 		<module>springboot-download</module>
+		<module>springboot-jsonrpc</module>
 	</modules>
 
 	<parent>
