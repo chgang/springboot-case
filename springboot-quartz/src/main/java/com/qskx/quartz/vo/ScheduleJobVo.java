@@ -38,10 +38,10 @@ public class ScheduleJobVo implements Serializable {
     private String description;
 
     /** 创建时间 */
-    private Date gmtCreate;
+    private Date createTime;
 
     /** 修改时间 */
-    private Date gmtModify;
+    private Date updateTime;
 
     /** 任务执行url */
     private String url;
@@ -112,20 +112,20 @@ public class ScheduleJobVo implements Serializable {
         this.description = description;
     }
 
-    public Date getGmtCreate() {
-        return gmtCreate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setGmtCreate(Date gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getGmtModify() {
-        return gmtModify;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setGmtModify(Date gmtModify) {
-        this.gmtModify = gmtModify;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Integer getSync() {

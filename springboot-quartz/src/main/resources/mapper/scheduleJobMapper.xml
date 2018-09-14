@@ -50,7 +50,7 @@
         cron_expression = #{cronExpression,jdbcType=VARCHAR},
       </if>
       <if test="sync != null">
-        is_sync = #{sync,jdbcType=VARCHAR},
+        sync = #{sync,jdbcType=VARCHAR},
       </if>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
@@ -88,7 +88,7 @@
   <insert id="insertSelective" parameterType="com.qskx.quartz.entity.ScheduleJob">
     insert into schedule_job
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="scheduleJobId != null">
+      <if test="id != null">
         id,
       </if>
       <if test="jobName != null">
@@ -129,7 +129,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="scheduleJobId != null">
+      <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
       <if test="jobName != null">
