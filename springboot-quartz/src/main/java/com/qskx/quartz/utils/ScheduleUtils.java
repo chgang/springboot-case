@@ -53,7 +53,7 @@ public class ScheduleUtils {
      */
     public static void createScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) {
         createScheduleJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup(),
-            scheduleJob.getCronExpression(), scheduleJob.getIsSync(), scheduleJob);
+            scheduleJob.getCronExpression(), scheduleJob.getSync(), scheduleJob);
     }
 
     /**
@@ -67,9 +67,9 @@ public class ScheduleUtils {
      * @param param the param
      */
     public static void createScheduleJob(Scheduler scheduler, String jobName, String jobGroup,
-                                         String cronExpression, boolean isSync, Object param) {
+                                         String cronExpression, Integer isSync, Object param) {
         //同步或异步
-        Class<? extends Job> jobClass = isSync ? QuartzSyncFactory.class : QuartzAsyncFactory.class;
+        Class<? extends Job> jobClass = isSync == 1 ? QuartzSyncFactory.class : QuartzAsyncFactory.class;
 
         //构建job信息
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).build();
@@ -169,7 +169,7 @@ public class ScheduleUtils {
      */
     public static void updateScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) {
         updateScheduleJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup(),
-            scheduleJob.getCronExpression(), scheduleJob.getIsSync(), scheduleJob);
+            scheduleJob.getCronExpression(), scheduleJob.getSync(), scheduleJob);
     }
 
     /**
@@ -183,7 +183,7 @@ public class ScheduleUtils {
      * @param param the param
      */
     public static void updateScheduleJob(Scheduler scheduler, String jobName, String jobGroup,
-                                         String cronExpression, boolean isSync, Object param) {
+                                         String cronExpression, Integer isSync, Object param) {
 
         //同步或异步
 //        Class<? extends Job> jobClass = isSync ? AsyncJobFactory.class : SyncJobFactory.class;

@@ -2,7 +2,7 @@ package com.qskx.quartz.service.impl;
 
 import com.qskx.quartz.dao.ScheduleJobDao;
 import com.qskx.quartz.entity.ScheduleJob;
-import com.qskx.quartz.service.IJobAndTriggerService;
+import com.qskx.quartz.service.IScheduleJobService;
 import com.qskx.quartz.utils.ScheduleUtils;
 import com.qskx.quartz.vo.ScheduleJobVo;
 import org.quartz.*;
@@ -25,9 +25,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
-public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
+public class ScheduleJobServiceImpl implements IScheduleJobService {
 
-	private static final Logger log = LoggerFactory.getLogger(JobAndTriggerServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ScheduleJobServiceImpl.class);
 
 	/** 调度工厂Bean */
 	@Autowired
@@ -61,7 +61,7 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 	public Long insert(ScheduleJobVo scheduleJobVo) {
 		ScheduleJob scheduleJob = convertPOAndVo(new ScheduleJob(), scheduleJobVo, null);
 		ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-		return scheduleJobDao.insert(scheduleJob);
+		return scheduleJobDao.insertSelective(scheduleJob);
 	}
 
 	public void update(ScheduleJobVo scheduleJobVo) {
@@ -254,22 +254,23 @@ public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 
 	private static PropertyDescriptor getPropertyDesByName(Class<?> clazz, String name){
 
-		AtomicReference<PropertyDescriptor> resultPd = null;
+		PropertyDescriptor resultPd = null;
 		try {
 			if (StringUtils.isEmpty(name)){
-				return resultPd.get();
+				return null;
 			}
 			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
 			PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-			Arrays.asList(descriptors).stream().forEach(item -> {
-				if (item.getName() != null && item.getName().equals(name)){
-					resultPd.set(item);
+			for (PropertyDescriptor item : descriptors) {
+				if (item.getName() != null && item.getName().equals(name)) {
+					resultPd = item;
+					break;
 				}
-			});
+			}
 		} catch (Exception e){
 			log.error("PropertyDescriptor -> 获取指定属性异常 error {}", e.getMessage(), e);
 		}
-		return resultPd.get();
+		return resultPd;
 	}
 
 }

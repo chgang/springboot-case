@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.qskx.quartz.dao.scheduleJobMapper">
+<mapper namespace="com.qskx.quartz.dao.ScheduleJobDao">
   <resultMap id="BaseResultMap" type="com.qskx.quartz.entity.ScheduleJob">
-    <id column="schedule_job_id" jdbcType="BIGINT" property="scheduleJobId" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="job_name" jdbcType="VARCHAR" property="jobName" />
     <result column="alias_name" jdbcType="VARCHAR" property="aliasName" />
     <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
     <result column="job_trigger" jdbcType="VARCHAR" property="jobTrigger" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression" />
-    <result column="is_sync" jdbcType="VARCHAR" property="isSync" />
+    <result column="sync" jdbcType="VARCHAR" property="sync" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="param" jdbcType="VARCHAR" property="param" />
     <result column="description" jdbcType="VARCHAR" property="description" />
@@ -17,28 +17,71 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    schedule_job_id, job_name, alias_name, job_group, job_trigger, status, cron_expression, 
-    is_sync, url, param, description, create_time, update_time
+    id, job_name, alias_name, job_group, job_trigger, status, cron_expression,
+    sync, url, param, description, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from schedule_job
-    where schedule_job_id = #{scheduleJobId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="queryList" parameterType="com.qskx.quartz.entity.ScheduleJob" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from schedule_job
+    <where>
+      <if test="jobName != null">
+        job_name = #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasName != null">
+        alias_name = #{aliasName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        job_group = #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="jobTrigger != null">
+        job_trigger = #{jobTrigger,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="cronExpression != null">
+        cron_expression = #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="sync != null">
+        is_sync = #{sync,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from schedule_job
-    where schedule_job_id = #{scheduleJobId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.qskx.quartz.entity.ScheduleJob">
-    insert into schedule_job (schedule_job_id, job_name, alias_name, 
+    insert into schedule_job (id, job_name, alias_name,
       job_group, job_trigger, status, 
-      cron_expression, is_sync, url, 
+      cron_expression, sync, url,
       param, description, create_time, 
       update_time)
-    values (#{scheduleJobId,jdbcType=BIGINT}, #{jobName,jdbcType=VARCHAR}, #{aliasName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{jobName,jdbcType=VARCHAR}, #{aliasName,jdbcType=VARCHAR},
       #{jobGroup,jdbcType=VARCHAR}, #{jobTrigger,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{cronExpression,jdbcType=VARCHAR}, #{isSync,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{cronExpression,jdbcType=VARCHAR}, #{sync,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
       #{param,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -46,7 +89,7 @@
     insert into schedule_job
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="scheduleJobId != null">
-        schedule_job_id,
+        id,
       </if>
       <if test="jobName != null">
         job_name,
@@ -66,8 +109,8 @@
       <if test="cronExpression != null">
         cron_expression,
       </if>
-      <if test="isSync != null">
-        is_sync,
+      <if test="sync != null">
+        sync,
       </if>
       <if test="url != null">
         url,
@@ -87,7 +130,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="scheduleJobId != null">
-        #{scheduleJobId,jdbcType=BIGINT},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="jobName != null">
         #{jobName,jdbcType=VARCHAR},
@@ -107,8 +150,8 @@
       <if test="cronExpression != null">
         #{cronExpression,jdbcType=VARCHAR},
       </if>
-      <if test="isSync != null">
-        #{isSync,jdbcType=VARCHAR},
+      <if test="sync != null">
+        #{sync,jdbcType=VARCHAR},
       </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
@@ -148,8 +191,8 @@
       <if test="cronExpression != null">
         cron_expression = #{cronExpression,jdbcType=VARCHAR},
       </if>
-      <if test="isSync != null">
-        is_sync = #{isSync,jdbcType=VARCHAR},
+      <if test="sync != null">
+        sync = #{sync,jdbcType=VARCHAR},
       </if>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
@@ -167,7 +210,7 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where schedule_job_id = #{scheduleJobId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.qskx.quartz.entity.ScheduleJob">
     update schedule_job
@@ -177,12 +220,12 @@
       job_trigger = #{jobTrigger,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       cron_expression = #{cronExpression,jdbcType=VARCHAR},
-      is_sync = #{isSync,jdbcType=VARCHAR},
+      sync = #{sync,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       param = #{param,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where schedule_job_id = #{scheduleJobId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

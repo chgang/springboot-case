@@ -13,7 +13,7 @@ public interface ScheduleJobDao {
 	 * @param scheduleJob
 	 * @return
 	 */
-	public Long insert(ScheduleJob scheduleJob);
+	public Long insertSelective(ScheduleJob scheduleJob);
 
 	/**
 	 * 直接修改 只能修改运行的时间，参数、同异步等无法修改
@@ -48,7 +48,7 @@ public interface ScheduleJobDao {
 	 * @param scheduleJobId the schedule job id
 	 * @return
 	 */
-	public void pauseJob(Long scheduleJobId);
+	void pauseJob(Long scheduleJobId);
 
 	/**
 	 * 恢复任务
@@ -56,7 +56,7 @@ public interface ScheduleJobDao {
 	 * @param scheduleJobId the schedule job id
 	 * @return
 	 */
-	public void resumeJob(Long scheduleJobId);
+	void resumeJob(Long scheduleJobId);
 
 	/**
 	 * 获取任务对象
@@ -64,7 +64,7 @@ public interface ScheduleJobDao {
 	 * @param scheduleJobId
 	 * @return
 	 */
-	public ScheduleJob get(Long scheduleJobId);
+	ScheduleJob get(Long scheduleJobId);
 
 	/**
 	 * 查询任务列表
@@ -72,7 +72,7 @@ public interface ScheduleJobDao {
 	 * @param scheduleJob
 	 * @return
 	 */
-	public List<ScheduleJob> queryList(ScheduleJob scheduleJob);
+	List<ScheduleJob> queryList(ScheduleJob scheduleJob);
 
 	/**
 	 * 获取运行中的任务列表

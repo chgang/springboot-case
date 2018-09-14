@@ -1,5 +1,16 @@
 $(function(){
-  getInitTable(mockData);
+    $.ajax({
+        type: 'POST',
+        url: 'http://localhost:18089/job/list',
+
+        success: function(data) {
+          // alert(data);
+          getInitTable(data);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
   
   // 添加任务
   $('#addTask').click(function() {
@@ -10,17 +21,17 @@ $(function(){
   $('#dialogSave').click(function() {
     var params = $('#quart').serialize(); // 序列化表单数据
     console.log(params);
-    // $.ajax({
-    //   url: '',
-    //   type: 'get',
-    //   data: params,
-    //   success: function(data) {
-    //     console.log(data);
-    //   },
-    //   error: function(err) {
-    //     console.log(err);
-    //   }
-    // })
+    $.ajax({
+      url: 'http://localhost:18089/job/add',
+      type: 'post',
+      data: params,
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    })
     showDialog('none');
     alertInfo('success', '操作成功！');
   })
@@ -32,35 +43,6 @@ $(function(){
   })
 })
 
-  // 模拟数据
-  var mockData = [
-    {
-      id: '222',
-      taskName: "某某任务111",
-      taskAlias: "某某任务别名",
-      taskGroup: "某某任务分组",
-      taskTrigger: "触发器",
-      taskStatus: "运行",
-      taskTimer: "xxxxxx",
-      taskSync: "1",
-      taskUrl: "执行",
-      taskDesc: "任务22222",
-      taskParams: "参数1，参数2",
-    },
-    {
-      id: "111",
-      taskName: "某某任务2222",
-      taskAlias: "某某任务别名2",
-      taskGroup: "某某任务分组2",
-      taskTrigger: "触发器2",
-      taskStatus: "运行2",
-      taskTimer: "xxxxxx2",
-      taskSync: "2",
-      taskUrl: "执行2",
-      taskDesc: "任务222223",
-      taskParams: "参数1，参数24，参数24，参数24",
-    }
-  ];
 
 // 显示隐藏添加任务弹窗
 function showDialog(state) {
@@ -79,19 +61,19 @@ function getInitTable(data) {
     `
     $('#tableBody').append(html);
   } else {
-    $.each(data, function(key, item) {
+    $.each(JSON.parse(data), function(key, item) {
       html += `
         <tr>
-          <td>${item.taskName}</td>
-          <td>${item.taskAlias}</td>
-          <td>${item.taskGroup}</td>
-          <td>${item.taskTrigger}</td>
-          <td>${item.taskStatus}</td>
-          <td>${item.taskTimer}</td>
-          <td>${item.taskSync == 1 ? '同步' : '异步'}</td>
-          <td>${item.taskUrl}</td>
-          <td>${item.taskDesc}</td>
-          <td>${item.taskParams}</td>
+          <td>${item.jobName}</td>
+          <td>${item.aliasName}</td>
+          <td>${item.jobGroup}</td>
+          <td>${item.jobTrigger}</td>
+          <td>${item.status}</td>
+          <td>${item.cronExpression}</td>
+          <td>${item.sync == 1 ? '同步' : '异步'}</td>
+          <td>${item.url}</td>
+          <td>${item.description}</td>
+          <td>${item.param}</td>
           <td>
             <button type="button" class="btn btn-danger" id="diaologSave" onclick="operate(${item.id}, 'pause')">暂停</button>
             <button type="button" class="btn btn-success" id="diaologSave" onclick="operate(${item.id}, 'restart')">恢复</button>

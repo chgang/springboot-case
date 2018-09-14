@@ -54,25 +54,25 @@
         <div class="form-group row">
           <label class="col-sm-3 control-label">任务名称</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskName" name="taskName">
+            <input type="text" class="form-control" id="jobName" name="jobName">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-3 control-label">任务分组</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskGroup" name="taskGroup">
+            <input type="text" class="form-control" id="jobGroup" name="jobGroup">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-3 control-label">任务别名</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskAlias" name="taskAlias">
+            <input type="text" class="form-control" id="aliasName" name="aliasName">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-3 control-label">时间表达式</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskTimer" name="taskTimer">
+            <input type="text" class="form-control" id="cronExpression" name="cronExpression">
           </div>
         </div>
         <div class="form-group row">
@@ -80,26 +80,26 @@
           <div class="col-sm-9">
             <input type="radio" id="syncSync" name="sync" value="1">
             <label class="control-label" for="syncSync">同步</label>
-            <input type="radio" name="sync" value="2" id="syncAsync">
+            <input type="radio" name="sync" value="0" id="syncAsync">
             <label  class="control-label" for="syncAsync">异步</label>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-3 control-label">任务执行url</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskUrl" name="taskUrl">
+            <input type="text" class="form-control" id="url" name="url">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-3 control-label">任务执行描述</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskDesc" name="taskDesc">
+            <input type="text" class="form-control" id="description" name="description">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-3 control-label">任务执行参数</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="taskParams" name="taskParams">
+            <input type="text" class="form-control" id="param" name="param">
           </div>
         </div>
         <div class="form-group row">

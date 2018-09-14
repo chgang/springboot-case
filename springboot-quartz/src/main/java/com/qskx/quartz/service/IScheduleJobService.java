@@ -6,7 +6,7 @@ import com.qskx.quartz.vo.ScheduleJobVo;
 
 import java.util.List;
 
-public interface IJobAndTriggerService {
+public interface IScheduleJobService {
 	/**
 	 * 初始化定时任务
 	 */

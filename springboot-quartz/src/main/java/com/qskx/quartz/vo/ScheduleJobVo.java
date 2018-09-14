@@ -11,7 +11,7 @@ public class ScheduleJobVo implements Serializable {
     public static final String JOB_PARAM_KEY  = "jobParam";
 
     /** 任务id */
-    private Long scheduleJobId;
+    private Long id;
 
     /** 任务名称 */
     private String jobName;
@@ -32,7 +32,7 @@ public class ScheduleJobVo implements Serializable {
     private String cronExpression;
 
     /** 是否异步 */
-    private Boolean isSync;
+    private Integer sync;
 
     /** 任务描述 */
     private String description;
@@ -46,12 +46,14 @@ public class ScheduleJobVo implements Serializable {
     /** 任务执行url */
     private String url;
 
-    public Long getScheduleJobId() {
-        return scheduleJobId;
+    private String param;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setScheduleJobId(Long scheduleJobId) {
-        this.scheduleJobId = scheduleJobId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getJobName() {
@@ -126,12 +128,20 @@ public class ScheduleJobVo implements Serializable {
         this.gmtModify = gmtModify;
     }
 
-    public Boolean getIsSync() {
-        return isSync;
+    public Integer getSync() {
+        return sync;
     }
 
-    public void setIsSync(Boolean isSync) {
-        this.isSync = isSync;
+    public void setSync(Integer sync) {
+        this.sync = sync;
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
     }
 
     public String getUrl() {

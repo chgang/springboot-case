@@ -8,7 +8,7 @@ public class ScheduleJob implements Serializable {
 	private static final long serialVersionUID = 8719451251921182432L;
 
 	/** 任务id */
-	private Long scheduleJobId;
+	private Long id;
 
 	/** 任务名称 */
 	private String jobName;
@@ -29,7 +29,7 @@ public class ScheduleJob implements Serializable {
 	private String cronExpression;
 
 	/** 是否异步 */
-	private Boolean isSync;
+	private Integer sync;
 
 	/** 任务描述 */
 	private String description;
@@ -52,12 +52,12 @@ public class ScheduleJob implements Serializable {
 	 */
 	private String param;
 
-	public Long getScheduleJobId() {
-		return scheduleJobId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setScheduleJobId(Long scheduleJobId) {
-		this.scheduleJobId = scheduleJobId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getJobName() {
@@ -108,12 +108,12 @@ public class ScheduleJob implements Serializable {
 		this.cronExpression = cronExpression;
 	}
 
-	public Boolean getIsSync() {
-		return isSync;
+	public Integer getSync() {
+		return sync;
 	}
 
-	public void setIsSync(Boolean isSync) {
-		isSync = isSync;
+	public void setSync(Integer sync) {
+		this.sync = sync;
 	}
 
 	public String getDescription() {
@@ -159,14 +159,14 @@ public class ScheduleJob implements Serializable {
 	@Override
 	public String toString() {
 		return "ScheduleJob{" +
-				"scheduleJobId=" + scheduleJobId +
+				"id=" + id +
 				", jobName='" + jobName + '\'' +
 				", aliasName='" + aliasName + '\'' +
 				", jobGroup='" + jobGroup + '\'' +
 				", jobTrigger='" + jobTrigger + '\'' +
 				", status='" + status + '\'' +
 				", cronExpression='" + cronExpression + '\'' +
-				", isSync=" + isSync +
+				", sync=" + sync +
 				", description='" + description + '\'' +
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
