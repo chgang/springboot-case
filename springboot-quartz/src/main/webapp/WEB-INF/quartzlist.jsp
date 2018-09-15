@@ -16,8 +16,9 @@
 <body>
   <div class="content">
     <div class="content__header">
-      <h1>Spring Quartz分布式定时任务</h1>
-      <p>Spring整合Quartz基于数据库的分布式定时任务，可动态添加、删除、修改定时任务。</p>
+      <h1>Springboot Quartz分布式定时任务</h1>
+      <p>Springboot整合Quartz基于数据库的分布式定时任务，可动态添加、删除、修改定时任务。</br>
+        该项目借鉴了github部分开源项目并改造，如发现雷同，请勿吐槽！谢谢大家支持！</p>
     </div>
     <div class="content__body">
       <div class="content__btn-con">

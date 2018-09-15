@@ -32,40 +32,40 @@
     from schedule_job
     <where>
       <if test="jobName != null">
-        job_name = #{jobName,jdbcType=VARCHAR},
+        AND job_name = #{jobName,jdbcType=VARCHAR}
       </if>
       <if test="aliasName != null">
-        alias_name = #{aliasName,jdbcType=VARCHAR},
+        AND alias_name = #{aliasName,jdbcType=VARCHAR}
       </if>
       <if test="jobGroup != null">
-        job_group = #{jobGroup,jdbcType=VARCHAR},
+        AND job_group = #{jobGroup,jdbcType=VARCHAR}
       </if>
       <if test="jobTrigger != null">
-        job_trigger = #{jobTrigger,jdbcType=VARCHAR},
+        AND job_trigger = #{jobTrigger,jdbcType=VARCHAR}
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
+        AND status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="cronExpression != null">
-        cron_expression = #{cronExpression,jdbcType=VARCHAR},
+        AND cron_expression = #{cronExpression,jdbcType=VARCHAR}
       </if>
       <if test="sync != null">
-        sync = #{sync,jdbcType=VARCHAR},
+        AND sync = #{sync,jdbcType=VARCHAR}
       </if>
       <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
+        AND url = #{url,jdbcType=VARCHAR}
       </if>
       <if test="param != null">
-        param = #{param,jdbcType=VARCHAR},
+        AND param = #{param,jdbcType=VARCHAR}
       </if>
       <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
+        AND description = #{description,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        AND update_time = #{updateTime,jdbcType=TIMESTAMP}
       </if>
     </where>
   </select>
@@ -173,6 +173,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.qskx.quartz.entity.ScheduleJob">
     update schedule_job
     <set>
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT},
+      </if>
       <if test="jobName != null">
         job_name = #{jobName,jdbcType=VARCHAR},
       </if>

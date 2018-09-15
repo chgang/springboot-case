@@ -67,7 +67,7 @@ public class ScheduleJobServiceImpl implements IScheduleJobService {
 	public void update(ScheduleJobVo scheduleJobVo) {
 		ScheduleJob scheduleJob = convertPOAndVo(new ScheduleJob(), scheduleJobVo, null);
 		ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
-		scheduleJobDao.update(scheduleJob);
+		scheduleJobDao.updateByPrimaryKeySelective(scheduleJob);
 	}
 
 	public void delUpdate(ScheduleJobVo scheduleJobVo) {
@@ -77,36 +77,36 @@ public class ScheduleJobServiceImpl implements IScheduleJobService {
 		//再创建
 		ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
 		//数据库直接更新即可
-		scheduleJobDao.update(scheduleJob);
+		scheduleJobDao.updateByPrimaryKeySelective(scheduleJob);
 	}
 
 	public void delete(Long scheduleJobId) {
-		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.selectByPrimaryKey(scheduleJobId);
 		//删除运行的任务
 		ScheduleUtils.deleteScheduleJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//删除数据
-		scheduleJobDao.delete(scheduleJobId);
+		scheduleJobDao.deleteByPrimaryKey(scheduleJobId);
 	}
 
 	public void runOnce(Long scheduleJobId) {
-		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.selectByPrimaryKey(scheduleJobId);
 		ScheduleUtils.runOnce(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 	}
 
 	public void pauseJob(Long scheduleJobId) {
-		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.selectByPrimaryKey(scheduleJobId);
 		ScheduleUtils.pauseJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//演示数据库就不更新了
 	}
 
 	public void resumeJob(Long scheduleJobId) {
-		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.selectByPrimaryKey(scheduleJobId);
 		ScheduleUtils.resumeJob(scheduler, scheduleJob.getJobName(), scheduleJob.getJobGroup());
 		//演示数据库就不更新了
 	}
 
 	public ScheduleJobVo get(Long scheduleJobId) {
-		ScheduleJob scheduleJob = scheduleJobDao.get(scheduleJobId);
+		ScheduleJob scheduleJob = scheduleJobDao.selectByPrimaryKey(scheduleJobId);
 		return convertPOAndVo(new ScheduleJobVo(), scheduleJob, null);
 	}
 

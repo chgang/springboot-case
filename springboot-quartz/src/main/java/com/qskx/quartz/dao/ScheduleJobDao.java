@@ -20,7 +20,7 @@ public interface ScheduleJobDao {
 	 *
 	 * @param scheduleJob
 	 */
-	public void update(ScheduleJob scheduleJob);
+	public void updateByPrimaryKeySelective(ScheduleJob scheduleJob);
 
 	/**
 	 * 删除重新创建方式
@@ -34,7 +34,7 @@ public interface ScheduleJobDao {
 	 *
 	 * @param scheduleJobId
 	 */
-	public void delete(Long scheduleJobId);
+	public void deleteByPrimaryKey(Long scheduleJobId);
 
 	/**
 	 * 运行一次任务
@@ -64,7 +64,7 @@ public interface ScheduleJobDao {
 	 * @param scheduleJobId
 	 * @return
 	 */
-	ScheduleJob get(Long scheduleJobId);
+	ScheduleJob selectByPrimaryKey(Long scheduleJobId);
 
 	/**
 	 * 查询任务列表

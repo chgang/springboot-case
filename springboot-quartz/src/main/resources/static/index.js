@@ -1,6 +1,6 @@
 $(function(){
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: 'http://localhost:18089/job/list',
 
         success: function(data) {
@@ -15,18 +15,27 @@ $(function(){
   // 添加任务
   $('#addTask').click(function() {
     showDialog('flex');
+      backEditStatus.set(1); // 设置添加状态
   })
 
   // 保存任务
   $('#dialogSave').click(function() {
     var params = $('#quart').serialize(); // 序列化表单数据
-    console.log(params);
+      var obj = backEditStatus.get();
+      console.log(obj);
+      var urlList = ['http://localhost:18089/job/add', 'http://localhost:18089/job/edit'];
+      var url = urlList[obj.status - 1];
+      if (obj.status == 2 && obj.id) {
+          params = params + '&id=' + obj.id;
+      }
+      console.log(url, params);
     $.ajax({
-      url: 'http://localhost:18089/job/add',
+      url: url,
       type: 'post',
       data: params,
       success: function(data) {
-        console.log(data);
+        // console.log(data);
+          getInitTable(data);
       },
       error: function(err) {
         console.log(err);
@@ -61,7 +70,7 @@ function getInitTable(data) {
     `
     $('#tableBody').append(html);
   } else {
-    $.each(JSON.parse(data), function(key, item) {
+    $.each(data, function(key, item) {
       html += `
         <tr>
           <td>${item.jobName}</td>
@@ -93,26 +102,92 @@ function operate(id, type) {
   switch(type) {
     case 'pause':
       alertInfo('success', '暂停');
+        $.ajax({
+            url: 'http://localhost:18089/job/pause',
+            type: 'post',
+            data: {id:id},
+            success: function(data) {
+                // alert(data);
+                getInitTable(data);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
       break;
     case 'restart':
       alertInfo('success', '恢复');
+        $.ajax({
+            url: 'http://localhost:18089/job/resume',
+            type: 'post',
+            data: {id:id},
+            success: function(data) {
+              // alert(data);
+                getInitTable(data);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
       break;
     case 'run':
       alertInfo('success', '运行一次');
+        $.ajax({
+            url: 'http://localhost:18089/job/runOnce',
+            type: 'post',
+            data: {id:id},
+            success: function(data) {
+                // alert(data);
+                getInitTable(data);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
       break;
     case 'edit':
       // 此处模拟获得数据 
-      var data = mockData.filter(item => item.id == id)[0];
-      initDialogData(data); // 填充数据
-      showDialog('flex'); // 显示弹窗
-      // $.ajax({
-      //   ...
-      // })
+        alertInfo('success', '修改');
+        showDialog('flex'); // 显示弹窗
+        backEditStatus.set(2, id);
+        $.ajax({
+            url: 'http://localhost:18089/job/get',
+            type: 'post',
+            data: {id:id},
+            success: function(data) {
+                // alert(data);
+                initDialogData(data);  // 填充数据
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
+        // $.ajax({
+        //     url: 'http://localhost:18089/job/edit',
+        //     type: 'post',
+        //     data: {id:id},
+        //     success: function(data) {
+        //         // alert(data);
+        //         getInitTable(data)
+        //     },
+        //     error: function(err) {
+        //         console.log(err);
+        //     }
+        // })
       break;
     case 'delete':
-      console.log(id);
-      var data = mockData = mockData.filter(item => item.id != id);
-      getInitTable(data) //重新获取一遍数据
+        $.ajax({
+            url: 'http://localhost:18089/job/delete',
+            type: 'post',
+            data: {id:id},
+            success: function(data) {
+                // alert(data);
+                getInitTable(data);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
       break;
     
   }
@@ -139,13 +214,30 @@ var alertInfo = (function() {
 
 // 初始化弹窗数据
 function initDialogData(param) {
-  var keys = ['taskName', 'taskGroup', 'taskAlias', 'taskTimer', 'taskSync', 'taskUrl', 'taskDesc', 'taskParams']; // id 列表
+  var keys = ['jobName', 'jobGroup', 'aliasName', 'cronExpression', 'sync', 'url', 'description', 'param']; // id 列表
   $.each(keys, function(k, v){
     var val = param && param[v] ? param[v] : ''; 
     $(`#${v}`) && $(`#${v}`).val(val);
   })
   // 同步异步操作
-  if (param && param['taskSync']) {
-    $('input[type="radio"]').eq(param['taskSync']-1).prop('checked', true);
+  if (param && param['sync']) {
+    $('input[type="radio"]').eq(param['sync']-1).prop('checked', true);
   }
 }
+
+var backEditStatus = (function() {
+    var status = 1; //判断保存操作是新增还是编辑 1 新增 2 添加 默认新增
+    var id = "";  //编辑状态时的id
+    return {
+        set: function(st, editId) {
+            status = st;
+            id = editId;
+        },
+        get: function() {
+            return {
+                status: status,
+                id: id
+            };
+        }
+    }
+})()
