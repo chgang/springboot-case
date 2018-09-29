@@ -23,6 +23,9 @@
 		<module>springboot-quartz</module>
 		<module>springboot-forkjoin</module>
 		<module>springboot-jsonrpc</module>
+		<module>springboot-design-mode</module>
+		<module>springboot-jsonrpc</module>
+		<module>springboot-mybatis-generator</module>
 	</modules>
 
 	<parent>
