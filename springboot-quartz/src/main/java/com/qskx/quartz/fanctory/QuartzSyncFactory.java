@@ -38,10 +38,10 @@ public class QuartzSyncFactory extends QuartzJobBean implements InterruptableJob
         MultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
         requestParam.add("params", jobParam);
         log.info("executeInternal -> 任务名称 = {}, 任务请求参数 param = {}", scheduleJob.getJobName(), jobParam);
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(requestParam, headers);
-        ResponseEntity<String> response = restTemplate.exchange(jobUrl, HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        log.info("executeInternal -> 任务名称 = {}, 任务执行结果 = {}", scheduleJob.getJobName(), result);
+//        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(requestParam, headers);
+//        ResponseEntity<String> response = restTemplate.exchange(jobUrl, HttpMethod.POST, entity, String.class);
+//        String result = response.getBody();
+//        log.info("executeInternal -> 任务名称 = {}, 任务执行结果 = {}", scheduleJob.getJobName(), result);
 
     }
 
