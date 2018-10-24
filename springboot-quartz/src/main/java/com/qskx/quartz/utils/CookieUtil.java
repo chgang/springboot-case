@@ -4,11 +4,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Cookie.Util
- *
- * @author xuxueli 2015-12-12 18:01:06
- */
 public class CookieUtil {
 
 	// 默认缓存时间,单位/秒, 2H
