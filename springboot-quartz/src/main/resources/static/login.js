@@ -11,23 +11,31 @@ $(function() {
     }
     if (pass == '') {
       $('#pass').addClass('error--border');
-      $('#pass_msg').html('请输入密码');
+      return $('#pass_msg').html('请输入密码');
     }
-    alertInfo('success', '登录成功！');
+    $.ajax({
+        url: 'http://localhost:18089/job/user/login',
+        type: 'post',
+        data: {user: user, pass: pass},
+        success: function(res) {
+
+            if (res.code == 0){
+                alertInfo("success","登录成功!");
+                location.href="index"
+            } else {
+                alertInfo("failed", "登录失败!");
+            }
+        },
+        error: function(err) {
+          console.log('错误')
+          console.log(err);
+        }
+      });
+
     setTimeout(function(){
-      location.href="index.html";
+        console.log("超时")
+      location.href="toLogin";
     }, 1000);
-    // $.ajax({
-    //   url: '////',
-    //   type: 'post',
-    //   data: {user: user, pass: pass},
-    //   success: function(res) {
-    //     console.log(res);
-    //   },
-    //   error: function(err) {
-    //     console.log(err);
-    //   }
-    // })
   })
 
 

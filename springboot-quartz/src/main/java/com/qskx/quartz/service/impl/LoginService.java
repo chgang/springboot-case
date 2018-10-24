@@ -49,12 +49,12 @@ public class LoginService {
 
         SheduleUser xxlConfUser = sheduleUserDao.load(usernameParam);
         if (xxlConfUser == null) {
-            return new ResponseCode<String>(500, "账号或密码错误");
+            return new ResponseCode<String>(10001, "账号或密码错误");
         }
 
         String passwordParamMd5 = DigestUtils.md5DigestAsHex(passwordParam.getBytes());
         if (!xxlConfUser.getPassword().equals(passwordParamMd5)) {
-            return new ResponseCode<String>(500, "账号或密码错误");
+            return new ResponseCode<String>(10001, "账号或密码错误");
         }
 
         String loginToken = makeToken(xxlConfUser);
@@ -94,6 +94,11 @@ public class LoginService {
             }
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        String password = DigestUtils.md5DigestAsHex("admin!#".getBytes());
+        System.out.println("password : " + password);
     }
 
 }

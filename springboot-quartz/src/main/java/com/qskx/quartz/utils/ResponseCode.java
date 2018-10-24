@@ -22,7 +22,7 @@ public class ResponseCode<T> {
     }
 
     public ResponseCode(T content){
-        this.code = 00;
+        this.code = 0;
         this.content = content;
     }
 

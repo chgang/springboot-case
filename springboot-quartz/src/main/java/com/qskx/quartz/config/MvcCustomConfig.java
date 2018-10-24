@@ -4,17 +4,17 @@ import com.qskx.quartz.interceptor.LoginInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 /**
  * @author 111111
  * @date 2018-10-20 21:29
  */
-@Configurable
-@EnableWebMvc
-@ComponentScan(basePackages = "com.qskx.quartz.controller")
+@Configuration
 public class MvcCustomConfig implements WebMvcConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(MvcCustomConfig.class);
@@ -47,8 +47,7 @@ public class MvcCustomConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册监控拦截器
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**");
-//                .excludePathPatterns("/configuration/ui");
+                .excludePathPatterns(Arrays.asList("/job/toLogin", "/job/user/login"));
 
     }
 
