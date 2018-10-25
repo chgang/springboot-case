@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qskx.quartz.dao.SheduleUserDao">
+	
+	<resultMap id="sheduleUser" type="com.qskx.quartz.entity.SheduleUser" >
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+	    <result column="permission" property="permission" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.`username`,
+		t.`password`,
+		t.`permission`
+	</sql>
+
+	<select id="pageList" parameterType="java.util.Map" resultMap="sheduleUser">
+		SELECT <include refid="Base_Column_List" />
+		FROM shedule_user AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="username != null and username != '' ">
+				AND t.username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="permission gt -1">
+				t.permission = #{permission}
+			</if>
+		</trim>
+		ORDER BY t.username
+		LIMIT #{offset}, #{pagesize}
+	</select>
+
+	<select id="pageListCount" parameterType="java.util.Map" resultType="int">
+		SELECT count(1)
+		FROM shedule_user AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="username != null and username != '' ">
+				AND t.username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="permission gt -1">
+				t.permission = #{permission}
+			</if>
+		</trim>
+	</select>
+
+	<insert id="add" parameterType="com.qskx.quartz.entity.SheduleUser" >
+		INSERT INTO shedule_user(
+			`username`,
+			`password`,
+			`permission`
+		)
+		VALUES(
+			#{username},
+			#{password},
+			#{permission}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.qskx.quartz.entity.SheduleUser" >
+		UPDATE shedule_user
+		SET `password` = #{password},
+			`permission` = #{permission}
+		WHERE `username` = #{username}
+	</update>
+
+	<delete id="delete" parameterType="java.util.Map" >
+		DELETE FROM shedule_user
+		WHERE `username` = #{username}
+	</delete>
+
+	<select id="load" parameterType="java.lang.String" resultMap="sheduleUser">
+		SELECT <include refid="Base_Column_List" />
+		FROM shedule_user AS t
+		WHERE `username` = #{username}
+	</select>
+
+</mapper>

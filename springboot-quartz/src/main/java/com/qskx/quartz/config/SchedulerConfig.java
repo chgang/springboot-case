@@ -1,7 +1,9 @@
 package com.qskx.quartz.config;
 
+import com.qskx.quartz.springbean.MyJobFactory;
 import org.quartz.Scheduler;
 import org.quartz.ee.servlet.QuartzInitializerListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +16,14 @@ import java.util.Properties;
 @Configuration
 public class SchedulerConfig {
 
+    @Autowired
+    private MyJobFactory myJobFactory;
+
     @Bean(name="SchedulerFactory")
     public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setQuartzProperties(quartzProperties());
+        factory.setJobFactory(myJobFactory);
         return factory;
     }
 

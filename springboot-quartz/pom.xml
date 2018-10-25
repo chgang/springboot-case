@@ -94,6 +94,30 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<envFlag>dev</envFlag>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<envFlag>test</envFlag>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<envFlag>prod</envFlag>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
         <plugins>
             <plugin>
@@ -112,14 +136,32 @@
                     <include>**/**</include>
                 </includes>
             </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/**</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/**</include>-->
+                <!--</includes>-->
+                <!--<filtering>false</filtering>-->
+            <!--</resource>-->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>dev/*</exclude>
+					<exclude>test/*</exclude>
+					<exclude>prod/*</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>static/**</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/${profiles.active}</directory>
+			</resource>
         </resources>
 	</build>
 

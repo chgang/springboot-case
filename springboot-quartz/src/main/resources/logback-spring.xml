@@ -63,26 +63,24 @@
     <logger name="com.qskx.quartz" level="debug" />
     <!--<logger name="com.netflix.discovery.shared.resolver.aws" level="warn" />-->
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="time-rolling" />
-    </root>
+    <!--<root level="INFO">-->
+        <!--<appender-ref ref="STDOUT" />-->
+        <!--<appender-ref ref="time-rolling" />-->
+    <!--</root>-->
 
-    <!--<springProfile name="dev">-->
-        <!--<root level="info">-->
-            <!--<appender-ref ref="asynAppender"/>-->
-            <!--<appender-ref ref="errorAppender"/>-->
-            <!--<appender-ref ref="stdoutAppender"/>-->
-        <!--</root>-->
-    <!--</springProfile>-->
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="stdoutAppender"/>
+        </root>
+    </springProfile>
 
-    <!--<springProfile name="test">-->
-        <!--<root level="info">-->
-            <!--<appender-ref ref="asynAppender"/>-->
-            <!--<appender-ref ref="errorAppender"/>-->
-            <!--<appender-ref ref="stdoutAppender"/>-->
-        <!--</root>-->
-    <!--</springProfile>-->
+    <springProfile name="test">
+        <root level="info">
+            <appender-ref ref="asynAppender"/>
+            <appender-ref ref="errorAppender"/>
+            <appender-ref ref="stdoutAppender"/>
+        </root>
+    </springProfile>
 
     <!--<springProfile name="beta">-->
         <!--<root level="info">-->
