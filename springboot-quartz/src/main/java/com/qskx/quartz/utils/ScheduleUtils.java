@@ -189,15 +189,15 @@ public class ScheduleUtils {
 //        Class<? extends Job> jobClass = isSync ? AsyncJobFactory.class : SyncJobFactory.class;
 
         try {
-//            JobDetail jobDetail = scheduler.getJobDetail(getJobKey(jobName, jobGroup));
+            JobDetail jobDetail = scheduler.getJobDetail(getJobKey(jobName, jobGroup));
 
 //            jobDetail = jobDetail.getJobBuilder().ofType(jobClass).build();
 
             //更新参数 实际测试中发现无法更新
 //            JobDataMap jobDataMap = jobDetail.getJobDataMap();
 //            jobDataMap.put(ScheduleJobVo.JOB_PARAM_KEY, param);
-//            jobDetail.getJobBuilder().usingJobData(jobDataMap);
-
+            ScheduleJob scheduleJob = (ScheduleJob) param;
+            jobDetail.getJobDataMap().put(ScheduleJobVo.JOB_PARAM_KEY, scheduleJob);
             TriggerKey triggerKey = ScheduleUtils.getTriggerKey(jobName, jobGroup);
 
             //表达式调度构建器
@@ -211,7 +211,9 @@ public class ScheduleUtils {
             // 忽略状态为PAUSED的任务，解决集群环境中在其他机器设置定时任务为PAUSED状态后，集群环境启动另一台主机时定时任务全被唤醒的bug
             if(!triggerState.name().equalsIgnoreCase("PAUSED")){
                 //按新的trigger重新设置job执行
-                scheduler.rescheduleJob(triggerKey, trigger);
+//                scheduler.rescheduleJob(triggerKey, trigger);
+                deleteScheduleJob(scheduler, jobName, jobGroup);
+                scheduler.scheduleJob(jobDetail, trigger);
             }
         } catch (SchedulerException e) {
             LOG.error("更新定时任务失败", e);
