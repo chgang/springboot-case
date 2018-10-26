@@ -6,7 +6,7 @@
 	<groupId>com.qskx</groupId>
 	<artifactId>springboot-quartz</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>springboot-quartz</name>
 	<description>Demo project for Spring Boot</description>
@@ -92,13 +92,18 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<version>2.0.1.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
 		<profile>
 			<id>dev</id>
 			<properties>
-				<envFlag>dev</envFlag>
+				<environment>dev</environment>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -107,13 +112,7 @@
 		<profile>
 			<id>test</id>
 			<properties>
-				<envFlag>test</envFlag>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<envFlag>prod</envFlag>
+				<environment>test</environment>
 			</properties>
 		</profile>
 	</profiles>
@@ -136,6 +135,16 @@
                     <include>**/**</include>
                 </includes>
             </resource>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>application-dev.properties</exclude>
+					<exclude>application-test.properties</exclude>
+					<exclude>test/**</exclude>
+					<exclude>dev/**</exclude>
+				</excludes>
+			</resource>
             <!--<resource>-->
                 <!--<directory>src/main/resources</directory>-->
                 <!--<includes>-->
@@ -144,23 +153,14 @@
                 <!--<filtering>false</filtering>-->
             <!--</resource>-->
 			<resource>
-				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
-				<excludes>
-					<exclude>dev/*</exclude>
-					<exclude>test/*</exclude>
-					<exclude>prod/*</exclude>
-				</excludes>
-			</resource>
-			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>static/**</include>
+					<include>application-${environment}.properties</include>
+					<include>${environment}/**</include>
+					<include>application.properties</include>
 				</includes>
-				<filtering>false</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/resources/${profiles.active}</directory>
 			</resource>
         </resources>
 	</build>

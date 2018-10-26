@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
@@ -27,10 +28,14 @@ public class SchedulerConfig {
         return factory;
     }
 
+    @Autowired
+    private Environment env;
+
     @Bean
     public Properties quartzProperties() throws IOException {
+        String[] profiles = env.getActiveProfiles();
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        propertiesFactoryBean.setLocation(new ClassPathResource("/quartz.properties"));
+        propertiesFactoryBean.setLocation(new ClassPathResource("/" + profiles[0] + "/quartz.properties"));
         //在quartz.properties中的属性被读取并注入后再初始化对象
         propertiesFactoryBean.afterPropertiesSet();
         return propertiesFactoryBean.getObject();

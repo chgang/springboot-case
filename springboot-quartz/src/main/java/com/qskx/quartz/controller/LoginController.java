@@ -2,6 +2,8 @@ package com.qskx.quartz.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.qskx.quartz.service.impl.LoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/job")
 public class LoginController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+
     @RequestMapping("/toLogin")
     public String toLogin(){
         return "login";
@@ -33,7 +37,9 @@ public class LoginController {
     public String userLogin(@RequestParam(value = "user")String userName,
                             @RequestParam(value = "pass")String passWord,
                             HttpServletResponse response){
+//        LOG.info("userLogin ==> 用户登录信息 userName = {}, passWord = {}", userName, passWord);
         String retInfo = JSON.toJSONString(loginService.login(response, userName, passWord, true));
+        LOG.info("userLogin ==> 用户登录返回 result = {}", retInfo);
         return retInfo;
     }
 
