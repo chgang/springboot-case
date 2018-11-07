@@ -6,7 +6,7 @@
 	<groupId>com.qskx</groupId>
 	<artifactId>springboot-quartz</artifactId>
 	<version>1.0.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>springboot-quartz</name>
 	<description>Demo project for Spring Boot</description>
