@@ -1,0 +1,70 @@
+public class decompile.TestUser {
+  public decompile.TestUser();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+    LineNumberTable:
+      line 15: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       5     0  this   Ldecompile/TestUser;
+
+  public void test(int);
+    Code:
+       0: aload_0
+       1: aload_0
+       2: getfield      #2                  // Field count:I
+       5: iload_1
+       6: iadd
+       7: putfield      #2                 // 经过上一步操作后，栈中有两个值，栈顶为上一步操作结果，栈顶下面是this引用，这一步putfield指令，用于将栈顶的值赋值给引用对象的count字段
+      10: return
+    LineNumberTable:
+      line 19: 0
+      line 20: 10
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      11     0  this   Ldecompile/TestUser;
+          0      11     1     a   I
+
+  public decompile.entity.User initUser(int, java.lang.String);
+    Code:
+       0: new           #3                  // class decompile/entity/User
+       3: dup
+       4: invokespecial #4                  // Method decompile/entity/User."<init>":()V
+       7: astore_3
+       8: aload_3
+       9: iload_1
+      10: invokevirtual #5                  // Method decompile/entity/User.setAge:(I)V
+      13: aload_3
+      14: aload_2
+      15: invokevirtual #6                  // Method decompile/entity/User.setName:(Ljava/lang/String;)V
+      18: aload_3
+      19: areturn
+    LineNumberTable:
+      line 23: 0
+      line 24: 8
+      line 25: 13
+      line 26: 18
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0      20     0  this   Ldecompile/TestUser;
+          0      20     1   age   I
+          0      20     2  name   Ljava/lang/String;
+          8      12     3  user   Ldecompile/entity/User;
+
+  public void changeUser(decompile.entity.User, java.lang.String);
+    Code:
+       0: aload_1
+       1: aload_2
+       2: invokevirtual #6                  // Method decompile/entity/User.setName:(Ljava/lang/String;)V
+       5: return
+    LineNumberTable:
+      line 30: 0
+      line 31: 5
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       6     0  this   Ldecompile/TestUser;
+          0       6     1  user   Ldecompile/entity/User;
+          0       6     2 newName   Ljava/lang/String;
+}
