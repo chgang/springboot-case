@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
         userMapper.insert(user);
 
-//        orderMapper.insert(order);
+        orderMapper.insert(order);
 //        int i = 1/0;
     }
 }

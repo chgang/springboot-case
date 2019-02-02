@@ -20,7 +20,7 @@
     where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.qskx.transaction.entity.Order">
-    insert into order (order_id, user_id, num)
+    insert into distribute_trans_02.`order` (order_id, user_id, num)
     values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}
       )
   </insert>
