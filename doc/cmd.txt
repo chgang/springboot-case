@@ -1,5 +1,0 @@
-javac -g 类名.java
-javap -v class名
-javap -c -l class名
-
-https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5.areturn
