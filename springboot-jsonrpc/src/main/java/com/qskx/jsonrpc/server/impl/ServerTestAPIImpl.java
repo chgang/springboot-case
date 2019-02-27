@@ -1,7 +1,10 @@
 package com.qskx.jsonrpc.server.impl;
 
 import com.googlecode.jsonrpc4j.spring.AutoJsonRpcServiceImpl;
+import com.qskx.jsonrpc.impl.ExecuteOrderImpl;
 import com.qskx.jsonrpc.server.ServerTestAPI;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,11 +19,27 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AutoJsonRpcServiceImpl
-public class ServerTestAPIImpl implements ServerTestAPI {
+public class ServerTestAPIImpl implements ServerTestAPI, BeanPostProcessor {
 
     @Override
     public int multiplier(int a, int b) {
 //        int i = 1/0;
         return a * b;
     }
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        if (beanName.equals("executeOrderImpl")) {
+            ExecuteOrderImpl executeOrder = (ExecuteOrderImpl) bean;
+            executeOrder.setName("bbbbbbbbbb");
+        }
+        System.out.println("beanName = " + beanName);
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
+
 }
