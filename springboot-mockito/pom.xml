@@ -42,11 +42,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bouncycastle-jce-jdk13</artifactId>
-            <version>112</version>
-        </dependency>
 
     </dependencies>
 

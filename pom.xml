@@ -26,7 +26,6 @@
 		<module>springboot-design-mode</module>
 		<module>springboot-jsonrpc</module>
 		<module>springboot-mybatis-generator</module>
-		<module>springboot-mockito</module>
 	</modules>
 
 	<parent>
