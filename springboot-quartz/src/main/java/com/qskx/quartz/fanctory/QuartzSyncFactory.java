@@ -37,7 +37,7 @@ public class QuartzSyncFactory extends QuartzJobBean implements InterruptableJob
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
         requestParam.add("params", jobParam);
-        log.info("executeInternal -> 任务名称 = {}, 任务请求参数 param = {}", scheduleJob.getJobName(), jobParam);
+        log.info("executeInternal -> 任务名称 = {}, 任务请求参数 param = {}, 任务执行地址 url = {}", scheduleJob.getJobName(), jobParam, jobUrl);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(requestParam, headers);
         ResponseEntity<String> response = restTemplate.exchange(jobUrl, HttpMethod.POST, entity, String.class);
         String result = response.getBody();

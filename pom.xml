@@ -26,6 +26,7 @@
 		<module>springboot-design-mode</module>
 		<module>springboot-jsonrpc</module>
 		<module>springboot-mybatis-generator</module>
+		<module>springboot-sync</module>
 	</modules>
 
 	<parent>
