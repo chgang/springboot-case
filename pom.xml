@@ -27,6 +27,7 @@
 		<module>springboot-jsonrpc</module>
 		<module>springboot-mybatis-generator</module>
 		<module>springboot-sync</module>
+		<module>springboot-mockito</module>
 	</modules>
 
 	<parent>

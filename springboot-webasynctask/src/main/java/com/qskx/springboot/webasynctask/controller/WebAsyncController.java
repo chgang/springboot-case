@@ -7,9 +7,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.context.request.async.WebAsyncTask;
 
 import java.util.concurrent.TimeUnit;
@@ -132,5 +134,28 @@ public class WebAsyncController {
 //            System.out.println("***************" + responseEntity.getBody());
         }
         return "true";
+    }
+
+    private static DeferredResult<String> deferredResult = new DeferredResult<>();
+
+    /**
+     * 返回DeferredResult对象
+     *
+     * @return
+     */
+    @RequestMapping("/testDeferredResult")
+    public DeferredResult<String> testDeferredResult() {
+        return deferredResult;
+    }
+
+    /**
+     * 对DeferredResult的结果进行设置
+     * @return
+     */
+    @RequestMapping("/setDeferredResult")
+    public String setDeferredResult() {
+        deferredResult.setResult("Test result!");
+        deferredResult = new DeferredResult<>();
+        return "succeed";
     }
 }
